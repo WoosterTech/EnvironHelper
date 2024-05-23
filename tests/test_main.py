@@ -7,17 +7,16 @@ from environhelper.main import (
     parse_settings_file,
 )
 
+PYTHON_TEXT = """
+DEBUG = env('DEBUG', default=True)
+SECRET_KEY = env.str("SECRET_KEY")
+DATABASE_URL = env.str("DATABASE_URL", default="sqlite:///db.sqlite3")
+"""
 
 @pytest.fixture()
 def settings_file(tmp_path):
     settings_file = tmp_path / "settings.py"
-    settings_file.write_text(
-        """
-        DEBUG = env('DEBUG', default=True)
-        SECRET_KEY = env.str("SECRET_KEY")
-        DATABASE_URL = env.str("DATABASE_URL", default="sqlite:///db.sqlite3")
-        """
-    )
+    settings_file.write_text(PYTHON_TEXT)
     return settings_file
 
 
@@ -30,7 +29,7 @@ def test_parse_settings_file(settings_file):
     result = parse_settings_file(settings_file)
     assert ("DEBUG", "True") in result.items()
     assert ("SECRET_KEY", "") in result.items()
-    assert ("DATABASE_URL", '"sqlite:///db.sqlite3"') in result.items()
+    assert ("DATABASE_URL", "sqlite:///db.sqlite3") in result.items()
 
 
 def test_generate_env_file_content():
