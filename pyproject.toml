@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "environhelper"
-version = "0.1.1"
+version = "0.2.0"
 description = "Create a .env file from a settings.py file."
 authors = ["Karl Wooster <karl.wooster@alleima.com>"]
 readme = "README.md"
