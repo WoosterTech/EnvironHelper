@@ -1,6 +1,6 @@
 import click
 
-from .main import main as main_func
+from .main import create_sample_env as main_func
 
 
 @click.command()
