@@ -1,0 +1,56 @@
+ci:
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false
+
+default_language_version:
+  python: python3.12
+
+default_stages:
+- commit
+
+exclude: "(tests)/.*"
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: check-yaml
+        args: [ --unsafe ]
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.15.2
+    hooks:
+      - id: pyupgrade
+        args: [--py39-plus,--py310-plus,--py311-plus, --py312-plus]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.5
+    hooks:
+    # Run the linter.
+    - id: ruff
+      args: [--fix]
+    # Run the formatter.
+    - id: ruff-format
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+        exclude: tests/
+        additional_dependencies:
+          - types-click
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.27.0
+    hooks:
+      - id: commitizen
+  - repo: https://github.com/python-poetry/poetry
+    #! poetry doesn't follow the expected format for tagging, auto-update doesn't work
+    # version as of 2024/05/23 is "1.8.3"
+    rev: "1.8.3"
+    hooks:
+    - id: poetry-check
+    - id: poetry-lock
+      args: [--no-update]
+    # - id: poetry-export
+    # - id: poetry-install
